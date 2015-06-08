@@ -1,5 +1,7 @@
 #![allow(dead_code, unused_variables)]
 
+extern crate type_printer;
+
 fn main() {
     // The Problem:
     //      * I acquire a handle to some kind of resource.
@@ -10,7 +12,11 @@ fn main() {
 
     // foo2();
     // foo3();
-    integer_copy_confusion();
+    // integer_copy_confusion();
+
+    // println!("println de-references the interoplated variable")
+    // println!("Owned Seven {}", owned_seven());
+    wha();
 }
 
 fn foo() {
@@ -76,4 +82,38 @@ fn integer_copy_confusion() {
 
     // won't compile because Person does not implement Copy
     // let z = x;
+
+    let p = PersonWithCopy { age: 18 };
+    let i = p;
+    let q = p;
 }
+
+fn owned_seven() -> Box<i32> {
+    let three : Box<i32> = Box::new(3);
+    let four : Box<i32> = Box::new(4);
+    Box::new(*three + *four)
+}
+
+fn wha() {
+
+    // so could I saw I am assigning three to the address of 3
+    // or where on the stack 3 was allocated at?
+    let three = &3;
+    let four = &4;
+
+    // so ha! I don't need to deference for println!
+    //
+    // there needs to be an easier way see this
+    //
+    // or a more strict println?
+    println!("{}", three + four);
+
+    type_printer::print_type_of(&three);
+
+}
+
+#[derive(Copy, Clone)]
+struct PersonWithCopy {
+    age: i32
+}
+
