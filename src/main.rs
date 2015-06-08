@@ -8,7 +8,9 @@ fn main() {
     //          while you still have your reference.
     //      * You decide to use the resource.
 
-    foo2();
+    // foo2();
+    // foo3();
+    integer_copy_confusion();
 }
 
 fn foo() {
@@ -34,6 +36,44 @@ struct Person {
 
 impl Drop for Person {
     fn drop(&mut self) {
-        println!("dropping Person {} with age: ", self.age);
+        println!("dropping Person with age: {}", self.age);
     }
+}
+
+fn foo3() {
+    // So I can assign something to many variables!
+    // its just who every got it last
+
+    let x = Person { age: 32 };
+    let y = x;
+    let z = y;
+
+    // this won't compile!
+    // let j = x;
+
+    // because x gave away ownership to y
+}
+
+// any function that doesn't take a borrowed value, takes ownership
+//
+// and it will have to be returned to return ownership
+//
+// so unless the input value is the return value,
+// it needs to be borrowed, if you want to use it after the passing
+// it into a function
+
+fn integer_copy_confusion() {
+    let v = 1;
+    let x = v;
+
+    // this compiles!
+    let j = v + 3;
+
+    // because i32 implements Copy?
+
+    let x = Person { age: 17 };
+    let y = x;
+
+    // won't compile because Person does not implement Copy
+    // let z = x;
 }
