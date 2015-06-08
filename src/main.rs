@@ -19,7 +19,8 @@ fn main() {
     // wha();
     // what_happens_when(); // it doesn't compile thats what!
 
-    enum_enum_enums();
+    // enum_enum_enums();
+    lets_take_it_further();
 }
 
 fn foo() {
@@ -166,3 +167,15 @@ enum MyEnum {
 //
 // but if we let the function take ownership, then it can just deference it,
 // since it knows it owns it
+
+fn lets_take_it_further() {
+    // so what about this ref thang
+    match_and_print_2(&MyEnum::X(500));
+}
+
+fn match_and_print_2(e: &MyEnum) {
+    match e {
+        &MyEnum::X(x) => println!("x: {}", x),
+        &MyEnum::Y(ref y) => println!("y: {}", y)
+    }
+}
