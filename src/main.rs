@@ -16,7 +16,10 @@ fn main() {
 
     // println!("println de-references the interoplated variable")
     // println!("Owned Seven {}", owned_seven());
-    wha();
+    // wha();
+    // what_happens_when(); // it doesn't compile thats what!
+
+    enum_enum_enums();
 }
 
 fn foo() {
@@ -117,3 +120,49 @@ struct PersonWithCopy {
     age: i32
 }
 
+fn what_happens_when() {
+    println!("
+        what happens when I try to derive copy
+        on structs who have Boxes as attributes
+    ");
+
+    // can't compile because Box doesn't implement copy
+    // #[derive(Copy, Clone)]
+    // struct Email { user_id: i32, reply_count: Box<i32> }
+
+    // let e = Email { user_id: 1 };
+    //
+    // let x = e;
+    //
+    // let z = e;
+}
+
+fn enum_enum_enums() {
+    let x = MyEnum::X(10);
+    let y = MyEnum::Y(Box::new(99));
+
+    match_and_print(x);
+    match_and_print(y);
+}
+
+fn match_and_print(e: MyEnum) {
+    match e {
+        MyEnum::X(x) => println!("{}", x),
+        MyEnum::Y(y) => println!("{}", y)
+    }
+}
+
+enum MyEnum {
+    X(i32),
+    Y(Box<i32>)
+}
+
+
+// Ok so this is a very important distinction
+//
+// if we pass a borrowed Enum,
+// then we can not print a box variable since it is borrowed
+// and does not have copy and clone implemented
+//
+// but if we let the function take ownership, then it can just deference it,
+// since it knows it owns it
