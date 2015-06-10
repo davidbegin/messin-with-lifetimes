@@ -1,6 +1,7 @@
 #![allow(dead_code, unused_variables)]
 
 extern crate type_printer;
+mod by_example;
 
 fn main() {
     // The Problem:
@@ -20,7 +21,11 @@ fn main() {
     // what_happens_when(); // it doesn't compile thats what!
 
     // enum_enum_enums();
-    lets_take_it_further();
+    // lets_take_it_further();
+
+    // muty_match_attempts();
+
+    by_example::main();
 }
 
 fn foo() {
@@ -177,5 +182,36 @@ fn match_and_print_2(e: &MyEnum) {
     match e {
         &MyEnum::X(x) => println!("x: {}", x),
         &MyEnum::Y(ref y) => println!("y: {}", y)
+    }
+}
+
+
+// I never realized I would have to say mut here
+// I thought it would be known
+//
+// this is suprising, and the cause of some confusion
+// I have been experiencing
+fn muty_match_attempts() {
+    let mut x = MyEnum::X(2);
+    muty_match(&mut x);
+}
+
+
+// I can remember writing ruby code like this
+//
+// I recall almost a guilded rose example
+// increase only if it its this type,
+//
+// and I could see the value being a mut boxed value
+//
+// well that wasn't satsifing
+//
+// I don't see the practical value
+fn muty_match(e: &mut MyEnum) {
+    match e {
+        &mut MyEnum::X(x) => println!("{}", x),
+        &mut MyEnum::Y(ref y) => {
+            println!("{}", y);
+        }
     }
 }
